@@ -1,0 +1,1 @@
+Answer is just C(40,20) because you have 40 total 'down' or 'right' choices and just need to pick the 20 'down's or 'right's.
