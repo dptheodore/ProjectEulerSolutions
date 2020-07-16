@@ -57,6 +57,7 @@ int main(){
 	for (vector<string>::iterator it = namesVec.begin(); it!=namesVec.end(); it++){
 		string name = *it;
 		nameScore += nameIndex * alphaValue(name);
+		nameIndex++;
 	}
 
 
