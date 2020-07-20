@@ -1,7 +1,6 @@
 #include <iostream>
 #include <math.h>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
 bool isAbundant(int num){
@@ -11,16 +10,6 @@ bool isAbundant(int num){
 	}
 	return sum > num ? true : false;
 }
-	
-bool isAbPair(int naNum, vector<int> abNums){
-	for (vector<int>::iterator at = abNums.begin(); at != abNums.end() && *at < naNum; ++at){
-		int num = naNum - *at;
-		if ( binary_search(at, abNums.end(), num)){return true;}
-	}
-	return false;
-}
-
-
 int main(){
 	vector<int> abNums;
 	vector<int> naNums;
@@ -29,19 +18,21 @@ int main(){
 	for (int num = 1; num<=28123; num++){ //sort nums into abundant and non Ab
 		if (isAbundant(num) == true){
 			abNums.push_back(num);
-//
-			cout << num << " " ;
 		}
 		else{
 			naNums.push_back(num);
 		}
 	} 
 
+	int abunSums[28123+1] = {0};
+	for (vector<int>::iterator at = abNums.begin(); at!= abNums.end(); ++at){//Generate an abun sum lookup table
+		for (vector<int>::iterator at2 = at; at2 != abNums.end(); ++at2){
+			if (*at + *at2 <= 28123) {abunSums[*at + *at2] = 1;}
+		}
+	}
 
-
-
-	for (vector<int>::iterator nt = naNums.begin(); nt != naNums.end(); ++nt){
-		naSum += (isAbPair(*nt, abNums) == true) ? 0 : *nt;
+	for (int num = 1; num <=28123; num++){ //compare each number to the lookup table of abundant sums
+		if(abunSums[num] == 0) {naSum+=num;}
 	}
 
 	cout << naSum << endl;
