@@ -7,7 +7,6 @@ int factorial(int n){
 	return (n <= 1) ? 1 : n * factorial(n-1);
 }
 
-
 void checkCombo(const vector<int>& v,int numDigits) {
   static int count = 0;
   cout << "combination no " << (++count) << ": [ ";
