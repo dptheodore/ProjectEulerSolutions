@@ -3,36 +3,38 @@
 #include <math.h>
 #include <vector>
 using namespace std;
-int repeatNums (int divisor){
-	vector<int> digits;
-	int digIndex = 0;
-	int pwr = ceil(log10(divisor));
-	int dividend = pow(10, pwr);//Need a Power of 10 > the divisor
-	while (dividend > 0){//Long Division Process
-		int digit = dividend / divisor;
-		vector<int>::iterator it = find(digits.begin(),digits.end(), digit);
-		if (it == digits.end()){//If digit hasnt been used, add to the dock.
-			digits.push_back(digit);
+int repeatLength (int divisor){
+	vector<int> remainders;
+	int dividend = 1;
+	int position = 0;
+
+	while (dividend > 0){
+		dividend*=10;
+		position++;
+		int remainder = dividend % divisor;
+
+		vector<int>::iterator it = find(remainders.begin(),remainders.end(), remainder);
+
+		if (it == remainders.end()){//If remainder hasnt been used, add to the vec
+			remainders.push_back(remainder);
 		}
-		else{
-			return digIndex;
+		else{ //If this remainder has already been added in, then we have completed a full cycle of the repeating decimals
+			return (position - 1 - (distance(remainders.begin(),it)) );
 		}
 
-		dividend -= divisor*digit;
-		while (dividend < divisor && dividend != 0) {dividend*=10;}
+		dividend = remainder;
 	}
-	return digIndex;
+	return 0; //If dividend = 0, then we have a non repeating number and thus shouldnt factor into longest sequence
 }
 
 int main() {
-	int longestRepeat = 6;
-
-	for (int d = 11; d< 1000; d++ ){
-		int repeatCt = repeatNums(d);
-		longestRepeat = (repeatCt > longestRepeat) ? repeatCt : longestRepeat;
+	int topSeqLength = 6;
+	int topD = 11;
+	for (int d = 1000; d > 11; d-- ){
+		if (topSeqLength >= d) { topD = d + 1; break;} //largest Repeat Sequence for any d is d-1, so we can break if d hits our topSeqLength sequence
+		int repeatCt = repeatLength(d);
+		topSeqLength = (repeatCt > topSeqLength) ? repeatCt : topSeqLength;
 	}
-
-	cout << longestRepeat << endl;
-
+	cout << topD << endl;
 	return 0;
 }
