@@ -8,20 +8,16 @@ const int denoms [COIN_CT] = {1,2,5,10,20,50,100,200};
 
 
 int waysOf(int num,int index){
-	int ways = 0;
-	if(num == 0){
-		return 1;
-	}
-	else if (num < denoms[0]){
-		return 0;
-	}
-	else{
-		for(int i = index; i >= 0; i--){
-			ways += waysOf(num-denoms[i], i-1);
-			cout << i << endl;
+	int ways[201] = {0};
+	ways[0] = 1;
+
+	for (int i = 0; i <= index; i++){
+		for (int j = denoms[i]; j <= num; j++){
+			ways[j] += ways[j-denoms[i]];
 		}
 	}
-	return ways;
+
+	return ways[200];
 }
 
 
